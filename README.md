@@ -20,6 +20,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Development
+
+### Dropbox Sync Management
+This project includes utilities to manage Dropbox sync during development:
+
+```powershell
+# Check Dropbox status
+.\scripts\dropbox-control.ps1 -action status
+
+# Pause Dropbox for 1 hour
+.\scripts\dropbox-control.ps1 -action pause -duration 60
+
+# Safe npm operations (automatically handles Dropbox)
+.\scripts\npm-safe.ps1 -command "install"
+.\scripts\npm-safe.ps1 -command "build"
+```
+
+These scripts help prevent conflicts between npm operations and Dropbox sync.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

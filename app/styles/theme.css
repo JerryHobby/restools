@@ -1,0 +1,28 @@
+[data-theme="dark"] {
+    /* Background colors */
+    --background-primary: #1a1a1a;
+    --background-secondary: #2d2d2d;
+    
+    /* Text colors */
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-accent: #66b3ff;
+    
+    /* Border colors */
+    --border-color: #404040;
+    
+    /* Link colors */
+    --link-color: #66b3ff;
+    --link-hover: #99ccff;
+    
+    /* Button colors */
+    --button-primary: #0066cc;
+    --button-primary-hover: #0052a3;
+    --button-secondary: #404040;
+    --button-secondary-hover: #4d4d4d;
+    
+    /* Menu/Dropdown colors */
+    --menu-background: #2d2d2d;
+    --menu-hover: #404040;
+    --menu-active: #0066cc;
+}
