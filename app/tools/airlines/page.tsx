@@ -22,12 +22,6 @@ export default async function AirlinesPage() {
 
       <div className="overflow-x-auto">
         <table className="border rounded shadow mb-10 bg-white text-black w-full">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 text-left">Logo</th>
-              <th className="p-2 text-left">Details</th>
-            </tr>
-          </thead>
           <tbody>
             {airlines.map((airline) => (
               <tr key={airline.id} className="hover:bg-gray-50">
