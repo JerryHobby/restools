@@ -1,16 +1,16 @@
-'use client';
-
+import AirportsTable from '@/app/components/airports/AirportsTable';
 import React from 'react';
 
 export default function AirportsPage() {
   return (
-    <main className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Global Airports Database</h1>
-      <div className="mb-6">
-        <p>
+    <main className="container mx-auto px-4 py-8">
+      <div>
+        <h1 className="text-3xl font-bold mb-6">Airports Search</h1>
+        <p className="mb-4">
           Search and explore airports worldwide. Use the search box to filter by airport code, name,
           city, or country.
         </p>
+        <AirportsTable />
       </div>
     </main>
   );

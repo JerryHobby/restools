@@ -2,17 +2,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from './ThemeProvider';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme(theme === 'light' ? 'night' : 'light');
   };
 
   return (
     <button onClick={toggleTheme} className="btn btn-ghost btn-circle" aria-label="Toggle Theme">
-      {theme === 'dark' ? (
+      {theme === 'night' ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -47,10 +48,9 @@ function ThemeToggle() {
 
 interface NavItemsProps {
   className?: string;
-  onNavigate: (route: string) => void;
 }
 
-function NavItems({ className = '', onNavigate }: NavItemsProps) {
+function NavItems({ className = '' }: NavItemsProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const menuRef = useRef<HTMLUListElement>(null);
   const { data: session } = useSession();
@@ -73,12 +73,6 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
   };
 
-  const handleNavigation = (e: React.MouseEvent, route: string) => {
-    e.preventDefault();
-    onNavigate(route);
-    setOpenDropdown(null);
-  };
-
   return (
     <ul className={className} ref={menuRef}>
       <li className="relative">
@@ -88,19 +82,13 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
           </summary>
           <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/calls/callrecord')}>
-                Call Record
-              </a>
+              <Link href="/calls/callrecord">Call Record</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/calls/callerhistory')}>
-                Caller's History
-              </a>
+              <Link href="/calls/callerhistory">Caller&apos;s History</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/calls/dailyhistory')}>
-                Daily History
-              </a>
+              <Link href="/calls/dailyhistory">Daily History</Link>
             </li>
           </ul>
         </details>
@@ -112,14 +100,10 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
           </summary>
           <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/time/loadstaffman')}>
-                Load Staffman
-              </a>
+              <Link href="/time/loadstaffman">Load Staffman</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/time/tracktime')}>
-                Track Time
-              </a>
+              <Link href="/time/tracktime">Track Time</Link>
             </li>
           </ul>
         </details>
@@ -131,24 +115,16 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
           </summary>
           <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/tools/airlines')}>
-                Airlines
-              </a>
+              <Link href="/tools/airlines">Airlines</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/tools/airports')}>
-                Airports
-              </a>
+              <Link href="/tools/airports">Airports</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/tools/hubs')}>
-                US Hubs
-              </a>
+              <Link href="/tools/hubs">Hubs</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/tools/clocks')}>
-                World Clocks
-              </a>
+              <Link href="/tools/clocks">World Clocks</Link>
             </li>
           </ul>
         </details>
@@ -161,7 +137,7 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
           <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
             <li>
               {session ? (
-                <a
+                <Link
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -169,9 +145,9 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
                   }}
                 >
                   Logout
-                </a>
+                </Link>
               ) : (
-                <a
+                <Link
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -179,14 +155,12 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
                   }}
                 >
                   Login
-                </a>
+                </Link>
               )}
             </li>
             {session && (
               <li>
-                <a href="#" onClick={(e) => handleNavigation(e, '/account/profile')}>
-                  Profile
-                </a>
+                <Link href="/account/profile">Profile</Link>
               </li>
             )}
           </ul>
@@ -195,28 +169,20 @@ function NavItems({ className = '', onNavigate }: NavItemsProps) {
       <li className="relative">
         <details open={openDropdown === 'restools'} className="dropdown">
           <summary onClick={(e) => handleSummaryClick(e, 'restools')} className="hover:bg-base-200">
-            Res Tools
+            ResTools
           </summary>
           <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/about')}>
-                About
-              </a>
+              <Link href="/about">About</Link>
             </li>
             <li>
-              <a href="#" onClick={(e) => handleNavigation(e, '/contact')}>
-                Contact Us
-              </a>
+              <Link href="/contact">Contact Us</Link>
             </li>
           </ul>
         </details>
       </li>
     </ul>
   );
-}
-
-interface NavBarProps {
-  onNavigate: (route: string) => void;
 }
 
 const styles = `
@@ -226,7 +192,7 @@ const styles = `
   }
 `;
 
-export default function NavBar({ onNavigate }: NavBarProps) {
+export default function NavBar() {
   return (
     <>
       <style>{styles}</style>
@@ -249,22 +215,12 @@ export default function NavBar({ onNavigate }: NavBarProps) {
                 />
               </svg>
             </div>
-            <NavItems
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[60] mt-2 w-52 p-1 shadow z-50"
-              onNavigate={onNavigate}
-            />
+            <NavItems className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[60] mt-2 w-52 p-1 shadow" />
           </div>
-          <a
-            href="#"
-            className="btn btn-ghost text-xl btn-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('');
-            }}
-          >
+          <Link href="/" className="btn btn-ghost text-xl btn-sm">
             ResTools
-          </a>
-          <NavItems className="menu menu-horizontal px-1 hidden lg:flex" onNavigate={onNavigate} />
+          </Link>
+          <NavItems className="menu menu-horizontal px-1 hidden lg:flex" />
         </div>
         <div className="navbar-end">
           <ThemeToggle />

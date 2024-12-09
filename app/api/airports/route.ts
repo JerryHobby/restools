@@ -2,69 +2,50 @@ import { NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 
 export async function GET(request: Request) {
-    try {
-        const { searchParams } = new URL(request.url);
-        const query = searchParams.get('q') || '';
-        const page = parseInt(searchParams.get('page') || '1');
-        const limit = parseInt(searchParams.get('limit') || '50');
-        const offset = (page - 1) * limit;
+  try {
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('q') || '';
 
-        // Build where clause based on search query
-        const where = query ? {
+    const airports = await prisma.airport.findMany({
+      where: {
+        AND: [
+          {
+            type: {
+              in: ['large_airport', 'medium_airport'],
+            },
+          },
+          {
+            iata_code: {
+              not: null,
+            },
+          },
+          {
             OR: [
-                { iata_code: { equals: query.toUpperCase() } },
-                { name: { contains: query, mode: 'insensitive' } },
-                { municipality: { contains: query, mode: 'insensitive' } },
-                { iso_country: { equals: query.toUpperCase() } }
-            ]
-        } : undefined;
+              { name: { contains: query } },
+              { municipality: { contains: query } },
+              { iata_code: { contains: query } },
+              { iso_region: { contains: query } },
+              { keywords: { contains: query } },
+            ],
+          },
+        ],
+      },
+      orderBy: [
+        { type: 'asc' }, // First sort by type (large -> medium -> small)
+        { municipality: 'asc' }, // Then by city
+        { iata_code: 'asc' }, // Then by IATA code
+      ],
+      take: 50,
+    });
 
-        // Get airports with search and pagination
-        const [airports, total] = await Promise.all([
-            prisma.Airports.findMany({
-                where,
-                orderBy: [
-                    { type: 'desc' },  // Large airports first
-                    { name: 'asc' }
-                ],
-                skip: offset,
-                take: limit
-            }),
-            prisma.Airports.count({ where })
-        ]);
+    // Filter for 3-character IATA codes in memory
+    const filteredAirports = airports.filter(
+      (airport) => airport.iata_code && airport.iata_code.length === 3
+    );
 
-        // Return with explicit headers
-        return new NextResponse(
-            JSON.stringify({
-                airports,
-                pagination: {
-                    total,
-                    page,
-                    limit,
-                    pages: Math.ceil(total / limit)
-                }
-            }),
-            {
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-    } catch (error) {
-        console.error('Error:', error);
-        return new NextResponse(
-            JSON.stringify({ 
-                error: 'Failed to fetch airports',
-                airports: [],
-                pagination: { total: 0, page: 1, limit: 50, pages: 0 }
-            }),
-            { 
-                status: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-    }
+    return NextResponse.json({ airports: filteredAirports });
+  } catch (error) {
+    console.error('Error fetching airports:', error);
+    return NextResponse.json({ error: 'Failed to fetch airports', airports: [] }, { status: 500 });
+  }
 }

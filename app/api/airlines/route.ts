@@ -3,7 +3,7 @@ import prisma from '@/prisma/client';
 
 export async function GET() {
   try {
-    const airlines = await prisma.airlines.findMany();
+    const airlines = await prisma.airline.findMany();
     return NextResponse.json(airlines);
   } catch (error) {
     console.error('Error fetching airlines:', error);

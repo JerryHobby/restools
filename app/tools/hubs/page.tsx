@@ -1,11 +1,11 @@
 import React from 'react';
+import HubsTable from '@/app/components/hubs/HubsTable';
 
 export default function HubsPage() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">US Airline Hubs</h1>
-      {/* We'll implement the hubs table component later */}
-      <div className="p-4">Hub data coming soon...</div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Airline Hubs</h1>
+      <HubsTable />
     </div>
   );
 }
