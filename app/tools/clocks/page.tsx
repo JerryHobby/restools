@@ -1,11 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ClockGrid from '@/app/components/clocks/ClockGrid';
+
+const DEFAULT_IATAS = ['SFO', 'ORD', 'EWR', 'LHR'];
+const STORAGE_KEY = 'restools-clock-iatas';
 
 export default function WorldClocksPage() {
   const [iataInput, setIataInput] = useState('');
   const [activeIatas, setActiveIatas] = useState<string[]>([]);
+
+  // Load saved IATA codes on initial render
+  useEffect(() => {
+    const savedIatas = localStorage.getItem(STORAGE_KEY);
+    setActiveIatas(savedIatas ? JSON.parse(savedIatas) : DEFAULT_IATAS);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,6 +25,7 @@ export default function WorldClocksPage() {
     
     if (codes.length > 0) {
       setActiveIatas(codes);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
     }
   };
 
@@ -42,13 +52,7 @@ export default function WorldClocksPage() {
           </div>
         </form>
         
-        {activeIatas.length > 0 ? (
-          <ClockGrid iataList={activeIatas} />
-        ) : (
-          <p className="text-gray-600 dark:text-gray-400 text-center">
-            Enter IATA codes to display world clocks
-          </p>
-        )}
+        <ClockGrid iataList={activeIatas} />
       </div>
     </div>
   );

@@ -23,7 +23,16 @@ export default function ClockGrid({ iataList }: ClockGridProps) {
           throw new Error('Failed to fetch timezone data');
         }
         const data = await response.json();
-        setTimeZones(data);
+        
+        // Create a map for O(1) lookup of timezone data
+        const tzMap = new Map(data.map((tz: TimeZoneInfo) => [tz.iata, tz]));
+        
+        // Preserve the order of iataList by mapping through it
+        const orderedTimeZones = iataList
+          .map(iata => tzMap.get(iata))
+          .filter((tz): tz is TimeZoneInfo => tz !== undefined);
+        
+        setTimeZones(orderedTimeZones);
         setError('');
       } catch (err) {
         setError('Error fetching timezone data');

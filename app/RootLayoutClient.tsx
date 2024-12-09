@@ -4,7 +4,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
+      <main className="flex-grow container mx-auto px-4 py-8 mt-12">{children}</main>
     </div>
   );
 }

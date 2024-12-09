@@ -68,9 +68,24 @@ function NavItems({ className = '' }: NavItemsProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setOpenDropdown(null);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
+
   const handleSummaryClick = (e: React.MouseEvent, dropdownName: string) => {
     e.preventDefault();
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  };
+
+  const handleLinkClick = () => {
+    setOpenDropdown(null);
   };
 
   return (
@@ -80,15 +95,21 @@ function NavItems({ className = '' }: NavItemsProps) {
           <summary onClick={(e) => handleSummaryClick(e, 'calls')} className="hover:bg-base-200">
             Call Journal
           </summary>
-          <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
+          <ul className="p-1 w-48 absolute bg-base-100 dark:bg-gray-700 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-box -mt-2 z-50">
             <li>
-              <Link href="/calls/callrecord">Call Record</Link>
+              <Link href="/calls/callrecord" onClick={handleLinkClick}>
+                Call Record
+              </Link>
             </li>
             <li>
-              <Link href="/calls/callerhistory">Caller&apos;s History</Link>
+              <Link href="/calls/callerhistory" onClick={handleLinkClick}>
+                Caller's History
+              </Link>
             </li>
             <li>
-              <Link href="/calls/dailyhistory">Daily History</Link>
+              <Link href="/calls/dailyhistory" onClick={handleLinkClick}>
+                Daily History
+              </Link>
             </li>
           </ul>
         </details>
@@ -98,12 +119,16 @@ function NavItems({ className = '' }: NavItemsProps) {
           <summary onClick={(e) => handleSummaryClick(e, 'time')} className="hover:bg-base-200">
             Time Mgmt
           </summary>
-          <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
+          <ul className="p-1 w-48 absolute bg-base-100 dark:bg-gray-700 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-box -mt-2 z-50">
             <li>
-              <Link href="/time/loadstaffman">Load Staffman</Link>
+              <Link href="/time/loadstaffman" onClick={handleLinkClick}>
+                Load Staffman
+              </Link>
             </li>
             <li>
-              <Link href="/time/tracktime">Track Time</Link>
+              <Link href="/time/tracktime" onClick={handleLinkClick}>
+                Track Time
+              </Link>
             </li>
           </ul>
         </details>
@@ -113,18 +138,26 @@ function NavItems({ className = '' }: NavItemsProps) {
           <summary onClick={(e) => handleSummaryClick(e, 'tools')} className="hover:bg-base-200">
             Tools
           </summary>
-          <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
+          <ul className="p-1 w-48 absolute bg-base-100 dark:bg-gray-700 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-box -mt-2 z-50">
             <li>
-              <Link href="/tools/airlines">Airlines</Link>
+              <Link href="/tools/airlines" onClick={handleLinkClick}>
+                Airlines
+              </Link>
             </li>
             <li>
-              <Link href="/tools/airports">Airports</Link>
+              <Link href="/tools/airports" onClick={handleLinkClick}>
+                Airports
+              </Link>
             </li>
             <li>
-              <Link href="/tools/hubs">Hubs</Link>
+              <Link href="/tools/hubs" onClick={handleLinkClick}>
+                Hubs
+              </Link>
             </li>
             <li>
-              <Link href="/tools/clocks">World Clocks</Link>
+              <Link href="/tools/clocks" onClick={handleLinkClick}>
+                World Clocks
+              </Link>
             </li>
           </ul>
         </details>
@@ -134,13 +167,14 @@ function NavItems({ className = '' }: NavItemsProps) {
           <summary onClick={(e) => handleSummaryClick(e, 'account')} className="hover:bg-base-200">
             Account
           </summary>
-          <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
+          <ul className="p-1 w-48 absolute bg-base-100 dark:bg-gray-700 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-box -mt-2 z-50">
             <li>
               {session ? (
                 <Link
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
+                    handleLinkClick();
                     signOut();
                   }}
                 >
@@ -151,6 +185,7 @@ function NavItems({ className = '' }: NavItemsProps) {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
+                    handleLinkClick();
                     signIn();
                   }}
                 >
@@ -160,23 +195,34 @@ function NavItems({ className = '' }: NavItemsProps) {
             </li>
             {session && (
               <li>
-                <Link href="/account/profile">Profile</Link>
+                <Link href="/account/profile" onClick={handleLinkClick}>
+                  Profile
+                </Link>
               </li>
             )}
           </ul>
         </details>
       </li>
       <li className="relative">
-        <details open={openDropdown === 'restools'} className="dropdown">
-          <summary onClick={(e) => handleSummaryClick(e, 'restools')} className="hover:bg-base-200">
-            ResTools
+        <details open={openDropdown === 'help'} className="dropdown">
+          <summary onClick={(e) => handleSummaryClick(e, 'help')} className="hover:bg-base-200">
+            Help
           </summary>
-          <ul className="p-1 w-48 absolute bg-base-100 shadow-xl rounded-box -mt-2 z-50">
+          <ul className="p-1 w-48 absolute bg-base-100 dark:bg-gray-700 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-box -mt-2 z-50">
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/faq" onClick={handleLinkClick}>
+                FAQ
+              </Link>
             </li>
             <li>
-              <Link href="/contact">Contact Us</Link>
+              <Link href="/about" onClick={handleLinkClick}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" onClick={handleLinkClick}>
+                Contact Us
+              </Link>
             </li>
           </ul>
         </details>
@@ -194,9 +240,9 @@ const styles = `
 
 export default function NavBar() {
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-lg dark:shadow-none dark:border-b dark:border-gray-600">
       <style>{styles}</style>
-      <div className="navbar bg-base-100 relative z-50 py-1 min-h-0 h-12">
+      <div className="navbar">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-sm lg:hidden">
@@ -226,6 +272,6 @@ export default function NavBar() {
           <ThemeToggle />
         </div>
       </div>
-    </>
+    </div>
   );
 }

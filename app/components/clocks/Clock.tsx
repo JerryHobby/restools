@@ -41,7 +41,7 @@ export default function Clock({ iata, timezone, city }: ClockProps) {
   }, [timezone]);
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 m-2 bg-white dark:bg-gray-700 rounded-lg shadow-lg min-w-[200px]">
+    <div className="flex flex-col items-center justify-center p-4 m-2 bg-white dark:bg-gray-700 rounded-lg shadow-lg dark:shadow-none dark:border dark:border-gray-600 min-w-[200px]">
       <div className="text-lg font-bold text-gray-800 dark:text-white">{iata}</div>
       <div className="text-sm text-gray-600 dark:text-gray-300">{city}</div>
       <div className="text-2xl font-mono font-bold text-gray-900 dark:text-white mt-2">{time}</div>
