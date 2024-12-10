@@ -103,7 +103,7 @@ function NavItems({ className = '' }: NavItemsProps) {
             </li>
             <li>
               <Link href="/calls/callerhistory" onClick={handleLinkClick}>
-                Caller's History
+                Caller&apos;s History
               </Link>
             </li>
             <li>

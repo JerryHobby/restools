@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+scripts/SQL_Backups/Account_data.sql
+scripts/SQL_Backups/Authenticator_data.sql
+scripts/SQL_Backups/Session_data.sql
+scripts/SQL_Backups/User_data.sql
+scripts/SQL_Backups/VerificationToken_data.sql
+
 
 /OLDPROJECTS/
 # dependencies
